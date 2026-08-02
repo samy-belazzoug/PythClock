@@ -7,9 +7,13 @@ class Temps:
     heure:int
     minute:int
     seconde:int
+    format24:bool=True 
+    '''Format 12h (False) ou 24h (True) (par défaut : True)'''
+    pm:bool=False 
+    '''AM (0, False) ou PM (1, True) (par défaut : False)'''
 
 def formattage_temps(temps:Temps)->str:
-    '''Permet d'avoir un affichage du temps au format hh:mm:ss'''
+    '''Permet d'avoir un affichage du temps au format hh:mm:ss au format 12h ou 24h'''
     heure = ""
     minute = ""
     seconde = ""
@@ -28,7 +32,14 @@ def formattage_temps(temps:Temps)->str:
          seconde = "0" + str(temps.seconde)
     else:
          seconde = str(temps.seconde)
-    return f'{heure}:{minute}:{seconde}'
+    # Gestion format du temps
+    if not temps.format24:
+        if not temps.pm:
+            return f'{heure}:{minute}:{seconde} AM'
+        else:
+            return f'{heure}:{minute}:{seconde} PM'        
+    else:
+        return f'{heure}:{minute}:{seconde}'
 
 def mise_a_jour_temps(temps:Temps)->Temps:
     '''Mets à jour le temps 'temps' pour s'assurer qu'il ait des valeures correctes'''
@@ -39,9 +50,17 @@ def mise_a_jour_temps(temps:Temps)->Temps:
     # Gestion minutes
     if temps.minute > 59:
         temps.heure += 1; temps.minute = 0; temps.seconde = 0
-    # Gestion heures
-    if temps.heure > 23:
-        temps.heure = 0; temps.minute = 0; temps.seconde = 0
+    # Gestion heures selon format
+    if not temps.format24:
+        if temps.heure > 12:
+            if not temps.pm:
+                temps.pm = True
+            else:
+                temps.pm = False
+            temps.heure = 1; temps.minute = 0; temps.seconde = 0
+    else:
+        if temps.heure > 23:
+            temps.heure = 0; temps.minute = 0; temps.seconde = 0
     return temps
 
 def affichage_temps_simple(temps:Temps):
@@ -57,7 +76,7 @@ def comparer_temps(temps:Temps,delta:Temps)->bool:
     return temps.heure == delta.heure and temps.minute == delta.minute and temps.seconde == delta.seconde
 
 def affichage_temps_alarme(temps:Temps,delta:Temps,message:str):
-    '''Affiche dans le terminal le temps, se mets à jour toutes les secondes et s'arrête au temps 'delta' voulu en afficheant 'message'.'''
+    '''Affiche dans le terminal le temps, se mets à jour toutes les secondes et s'arrête au temps 'delta' voulu en affichant 'message'.'''
     print(formattage_temps(temps))
     while (not comparer_temps(temps,delta)):
         comparer_temps(temps,delta)
@@ -67,6 +86,7 @@ def affichage_temps_alarme(temps:Temps,delta:Temps,message:str):
     print(message)
 
 if __name__ == "__main__":
-    temps = Temps(23,59,50)
-    affichage_temps_alarme(temps,Temps(0,0,0),"C'est l'heure!")
+    temps24 = Temps(23,59,50,)
+    temps12 = Temps(12,59,55,False)
+    affichage_temps_alarme(temps12,Temps(1,0,0,False,True),"C'est l'heure!")
     # affichage_temps_simple(temps)
