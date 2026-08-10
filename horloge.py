@@ -1,6 +1,9 @@
 import time # sleep()
+import keyboard # read_key()
+import threading # Thread(), start()
 from dataclasses import dataclass # @dataclass
 
+etat = 1
 @dataclass
 class Temps: 
     '''Structure de données permettant la calculation d'un système d'horloge'''
@@ -63,14 +66,46 @@ def mise_a_jour_temps(temps:Temps)->Temps:
             temps.heure = 0; temps.minute = 0; temps.seconde = 0
     return temps
 
+def gestion_lecture_entree_clavier(temps:Temps):
+    global etat
+    while etat != 0:
+        key_pressed = keyboard.read_key()
+        if key_pressed == "space":
+            time.sleep(0.3)
+            if etat == 1:
+                etat = 2
+                print("pause.")
+            else:
+                etat = 1
+                print("reprise du temps.")
+        elif key_pressed == "esc":
+            print("arrêt du temps.")
+            etat = 0
+
+def gestion_etat_horloge(temps:Temps):
+    while etat != 0:
+            if etat == 1:
+                time.sleep(1)
+                mise_a_jour_temps(temps)
+                print(formattage_temps(temps), " ", etat)
+            elif etat == 2:
+                pass
+            else:
+                break
+
 def affichage_temps_simple(temps:Temps):
     '''Affiche dans le terminal le temps à partir de 'temps' et se mets à jour toutes les secondes'''
-    print(formattage_temps(temps))
-    while True:
-        time.sleep(1)
-        mise_a_jour_temps(temps)
-        print(formattage_temps(temps))
-
+    '''
+    etat = 0 -> arrêt de l'horloge
+    etat = 1 -> horloge tourne
+    etat = 2 -> horloge en pause
+    '''
+    global etat
+    thread_boucle_execution = threading.Thread(target=gestion_etat_horloge,args=(temps,))
+    thread_io_operations = threading.Thread(target=gestion_lecture_entree_clavier,args=(temps,))
+    thread_boucle_execution.start()
+    thread_io_operations.start()
+            
 def comparer_temps(temps:Temps,delta:Temps)->bool:
     '''Compare deux temps et renvoie si ces temps sont les mêmes'''
     return temps.heure == delta.heure and temps.minute == delta.minute and temps.seconde == delta.seconde
@@ -86,7 +121,7 @@ def affichage_temps_alarme(temps:Temps,delta:Temps,message:str):
     print(message)
 
 if __name__ == "__main__":
-    temps24 = Temps(23,59,50,)
+    temps24 = Temps(23,59,50)
     temps12 = Temps(12,59,55,False)
-    affichage_temps_alarme(temps12,Temps(1,0,0,False,True),"C'est l'heure!")
-    # affichage_temps_simple(temps)
+    # affichage_temps_alarme(temps12,Temps(1,0,0,False,True),"C'est l'heure!")
+    affichage_temps_simple(temps24)

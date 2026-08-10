@@ -1,0 +1,60 @@
+Problèmes principaux rencontrés lors du développement
+
+*À noter que le code est très simplifié et n'est pas le même que celui du vrai code à des fins d'explications
+
+1 : Pause du temps en temps réel
+
+Nous avons une fonction qui permet l'affichage d'une horloge en temps réel. Ce que l'on veut faire maintenant, c'est pouvoir, en temps réel,
+mettre en pause le temps ou l'arrêter.
+
+while True:
+    afficher_horloge()
+
+Etant donné que le temps tourne dans une boucle, alors le seul moyen de manuellement mettre en pause ou l'arrêter
+le temps est de détécter des entrées déclenchées par l'utilisateur via son clavier.
+Par exemple, si l'utilisateur appuie sur la touche espace, on mets en pause le temps, si il appuie ssur la touche escape, on arrête le temps.
+Cependant, pour reprendre le temps, il faudrait que l'utilisateur appuie aussi sur une autre touche ou la même touche.
+
+while True:
+    afficher_horloge()
+    if touche_espace_appuyée():
+        mets_temps_en_pause()
+    if touche_escape_appuyée():
+        break
+
+Je trouve plus pratique le fait d'avoir seule touche pour mettre en pause et reprendre le temps.
+Cependant, un problème va vite survenir. Si l'utilisateur appuis sur espace, cela mets en pause le temps, mais si il re-appuis sur espace
+rien ne peut se passer car on ne connait pas l'état de l'horloge.
+
+Un moyen de résoudre ce problème est d'avoir une variable qui stocke l'état de l'horloge pour savoir si elle est 
+soit en état de marche, soit en état de pause ou alors en état d'arrêt et faire des opérations selon cet état.
+
+etat = 0 -> arret
+etat = 1 -> tourne
+etat = 2 -> pause
+
+etat = 1
+while etat != 0:
+    if etat == 1:
+        afficher_horloge()
+    else if etat = 2:
+        pass
+    if touche_espace_appuyée():
+        if etat == 1:
+            etat = 2
+        else if etat = 2:
+            etat = 1
+    if touche_escape_appuyée():
+        etat = 0
+
+Maintenant, il y a un dernier problème qui est sans aucuns doutes le plus problématique.
+Pour détecter les entrées clavier, on utilise la librarie "keyboard", notamment la fonction keyboard.read_key().
+La fonction keyboard.read_key() lance une boucle et s'arrête quand une touche du clavier est pressée, elle retourne 
+ainsi la touche pressée.
+Si on utilise cette fonction dans notre boucle, cela veut dire que tout le programme va attendre que la fonction
+keyboard.read_key() retorne quelque chose pour continuer à procéder. Cela veut dire que l'horloge aussi devra attendre la fin de 
+cette fonction pour se mettre à jour, ce qui n'est pas optimal du tout!
+
+Ce que l'on veut, donc, c'est d'avoir une boucle qui gère l'affichage de l'horloge et la mets à jour, mais également une autre boucle 
+qui tourne en même temps qui gère les évènements claviers.
+Cela est possible avec les threads.
