@@ -4,7 +4,16 @@ import threading # Thread(), start()
 from dataclasses import dataclass # @dataclass
 import os # system(), name
 
+
+'''
+etat = 0 -> arrêt de l'horloge
+etat = 1 -> horloge tourne
+etat = 2 -> horloge en pause
+etat = 3 -> Alarme
+'''
 etat = 1
+etat_print = 0
+
 @dataclass
 class Temps: 
     '''Structure de données permettant la calculation d'un système d'horloge'''
@@ -67,7 +76,11 @@ def mise_a_jour_temps(temps:Temps)->Temps:
             temps.heure = 0; temps.minute = 0; temps.seconde = 0
     return temps
 
-def gestion_lecture_entree_clavier(temps:Temps):
+def comparer_temps(temps:Temps,delta:Temps)->bool:
+    '''Compare deux temps et renvoie si ces temps sont les mêmes'''
+    return temps.heure == delta.heure and temps.minute == delta.minute and temps.seconde == delta.seconde
+
+def gestion_lecture_entree_clavier():
     global etat
     while etat != 0:
         key_pressed = keyboard.read_key()
@@ -82,49 +95,66 @@ def gestion_lecture_entree_clavier(temps:Temps):
         elif key_pressed == "esc":
             print("arrêt du temps.")
             etat = 0
+            break
+    return
 
-def gestion_etat_horloge(temps:Temps):
+def gestion_etat_horloge(temps:Temps, message:str="",alarme:bool=False,delta:Temps=(0,0,0)):
     os.system('cls' if os.name == 'nt' else 'clear') # Oui, c'est deprecated... Mais sa marche.. pour l'instant..
+    global etat, etat_print
     while etat != 0:
             if etat == 1:
-                time.sleep(1)
-                mise_a_jour_temps(temps)
-                os.system('cls' if os.name == 'nt' else 'clear') # Oui, c'est deprecated... Mais sa marche.. pour l'instant..
-                print(formattage_temps(temps), " ", etat, " ", end='', flush=True)
+                etat_print = 0
+                if alarme == True:
+                    if comparer_temps(temps,delta) == True:
+                            etat_print = 2
+                            etat = 3
+                            mise_a_jour_temps(temps)
+                    else:
+                        time.sleep(1)
+                        mise_a_jour_temps(temps)
+                        os.system('cls' if os.name == 'nt' else 'clear') # Oui, c'est deprecated... Mais sa marche.. pour l'instant..
+                        print(formattage_temps(temps), " ", etat, " ", end='', flush=True)
+                else:
+                    etat_print = 0
+                    time.sleep(1)
+                    mise_a_jour_temps(temps)
+                    os.system('cls' if os.name == 'nt' else 'clear') # Oui, c'est deprecated... Mais sa marche.. pour l'instant..
+                    print(formattage_temps(temps), " ", etat, " ", end='', flush=True)
             elif etat == 2:
-                pass
-            else:
+                if etat_print == 0:
+                    os.system('cls' if os.name == 'nt' else 'clear') # Oui, c'est deprecated... Mais sa marche.. pour l'instant..
+                    print(formattage_temps(temps), " ", etat, " ", flush=True)
+                    print("Pour continuer le temps, appuyez sur espace, Pour arrêter le temps, appuyez sur esc")
+                    etat_print = 1
+            elif etat == 3:
+                if etat_print == 2:
+                    os.system('cls' if os.name == 'nt' else 'clear') # Oui, c'est deprecated... Mais sa marche.. pour l'instant..
+                    print(message)
+                    print(formattage_temps(temps), " ", etat, " ", flush=True)
+                    print("Pour continuer le temps, appuyez sur espace, Pour arrêter le temps, appuyez sur esc")
+                etat_print = 1
+            else: # etat == 0
                 break
+    return
 
 def affichage_temps_simple(temps:Temps):
     '''Affiche dans le terminal le temps à partir de 'temps' et se mets à jour toutes les secondes'''
-    '''
-    etat = 0 -> arrêt de l'horloge
-    etat = 1 -> horloge tourne
-    etat = 2 -> horloge en pause
-    '''
     global etat
     thread_boucle_execution = threading.Thread(target=gestion_etat_horloge,args=(temps,))
-    thread_io_operations = threading.Thread(target=gestion_lecture_entree_clavier,args=(temps,))
+    thread_io_operations = threading.Thread(target=gestion_lecture_entree_clavier,args=())
     thread_boucle_execution.start()
     thread_io_operations.start()
-            
-def comparer_temps(temps:Temps,delta:Temps)->bool:
-    '''Compare deux temps et renvoie si ces temps sont les mêmes'''
-    return temps.heure == delta.heure and temps.minute == delta.minute and temps.seconde == delta.seconde
 
 def affichage_temps_alarme(temps:Temps,delta:Temps,message:str):
     '''Affiche dans le terminal le temps, se mets à jour toutes les secondes et s'arrête au temps 'delta' voulu en affichant 'message'.'''
-    print(formattage_temps(temps))
-    while (not comparer_temps(temps,delta)):
-        comparer_temps(temps,delta)
-        time.sleep(1)
-        mise_a_jour_temps(temps)
-        print(formattage_temps(temps))
-    print(message)
+    global etat
+    thread_boucle_execution = threading.Thread(target=gestion_etat_horloge,args=(temps,message,True,delta))
+    thread_io_operations = threading.Thread(target=gestion_lecture_entree_clavier)
+    thread_boucle_execution.start()
+    thread_io_operations.start()
 
 if __name__ == "__main__":
     temps24 = Temps(23,59,50)
     temps12 = Temps(12,59,55,False)
-    # affichage_temps_alarme(temps12,Temps(1,0,0,False,True),"C'est l'heure!")
+    #affichage_temps_alarme(temps12,Temps(1,0,0,False,True),"C'est l'heure!")
     affichage_temps_simple(temps24)
