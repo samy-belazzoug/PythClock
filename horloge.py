@@ -2,6 +2,7 @@ import time # sleep()
 import keyboard # read_key()
 import threading # Thread(), start()
 from dataclasses import dataclass # @dataclass
+import os # system(), name
 
 etat = 1
 @dataclass
@@ -83,11 +84,13 @@ def gestion_lecture_entree_clavier(temps:Temps):
             etat = 0
 
 def gestion_etat_horloge(temps:Temps):
+    os.system('cls' if os.name == 'nt' else 'clear') # Oui, c'est deprecated... Mais sa marche.. pour l'instant..
     while etat != 0:
             if etat == 1:
                 time.sleep(1)
                 mise_a_jour_temps(temps)
-                print(formattage_temps(temps), " ", etat)
+                os.system('cls' if os.name == 'nt' else 'clear') # Oui, c'est deprecated... Mais sa marche.. pour l'instant..
+                print(formattage_temps(temps), " ", etat, " ", end='', flush=True)
             elif etat == 2:
                 pass
             else:
