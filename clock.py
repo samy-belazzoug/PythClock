@@ -19,7 +19,7 @@ class Clock:
     hours:int
     minutes:int
     seconds:int
-    format24:bool=True 
+    format24:bool=True
     '''12h (False) or 24h (True) format (by default : True)'''
     pm:bool=False 
     '''AM (0, False) or PM (1, True) (by default : False)'''
