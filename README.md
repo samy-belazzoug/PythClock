@@ -1,16 +1,19 @@
 # PythClock
 
+*My very first complete CLI app*
+
 ## Description
 
-This project is a implementation of a simple clock in a terminal console that updates every seconds.
+This project is a simple CLI app of a clock that updates every seconds.
 
 ## Features
 
-The project doesn't have a GUI yet, so it works only in the terminal for the moment.
-However, it have multiple features :
+The project will not have a GUI, in fact, it will only be a CLI app.
+It has multiple features :
 - Possibility to pause (and then resume) or stop the clock in real time thanks to a multithreaded event mangement system.
 - You can setup an alarm and the clock will run until the alarm is met.
-*For the moment, when the alarm is met, the time will automatically pause, but you can of course resume or stop the clock. You can also pause (and resume) or stop the clock before the alarm.*
+- CLI arguments/commands management, thanks to click library
+*When the alarm is met, the time will automatically pause, but you can of course resume or stop the clock.*
 
 ## Technologies
 
@@ -26,7 +29,7 @@ Python excells for simple projects like this. You don't have to write a lot of c
 
 ### Efficiency of the libraries and the PIP and the help of the community
 
-Python have very good libraries for this kind of project such as time, keyboard, threading etc... which are widely used by the community and well documented. It's very likely to find a solution to a problem by just a 5 minutes reasearch on the web.
+Python have very good libraries for this kind of project such as time, keyboard, threading, click etc... which are widely used by the community and well documented. It's very likely to find a solution to a problem by just a 5 minutes reasearch on the web.
 
 ## Why did I wanted to do this project 
 
