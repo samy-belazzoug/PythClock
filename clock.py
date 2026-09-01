@@ -139,7 +139,7 @@ def clock_state_management(time:Clock, alarm:bool=False, delta:Clock=(0,0,0), me
     return
 
 def time_terminal_displaying(time:Clock, alarm:bool=False, delta:Clock=(0,0,0), message:str=""):
-    '''Affiche dans le terminal le temps avec/sans alarme à partir de 'temps' et se mets à jour toutes les secondes.'''
+    '''Display the time in the terminal with/without the alarm from 'time' and updates every seconds.'''
     global clock_state
     thread_boucle_execution = threading.Thread(target=clock_state_management, args=(time,alarm, delta, message))
     thread_io_operations = threading.Thread(target=keyboard_input_management, args=())
