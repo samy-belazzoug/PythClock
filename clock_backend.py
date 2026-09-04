@@ -65,12 +65,16 @@ def time_updating(time:Clock)->Clock:
         time.hours += 1; time.minutes = 0; time.seconds = 0
     # Hours management with format management
     if not time.format24:
-        if time.hours > 12:
-            if not time.pm:
-                time.pm = True
-            else:
-                time.pm = False
-            time.hours = 1; time.minutes = 0; time.seconds = 0
+        # 12h format management
+        if time.pm == False:
+            if time.hours > 12:
+                    time.pm = True
+                    time.hours = 1; time.minutes = 0; time.seconds = 0
+        else:
+            if time.hours > 11:
+                    time.pm = False
+                    time.hours = 0; time.minutes = 0; time.seconds = 0
+    #24 hours format management
     else:
         if time.hours > 23:
             time.hours = 0; time.minutes = 0; time.seconds = 0
