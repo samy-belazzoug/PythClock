@@ -3,7 +3,6 @@ from keyboard import read_key # read_key()
 import threading # Thread(), start()
 from dataclasses import dataclass # @dataclass
 import os # name, system() (yes, it's deprecated, but it works well, currently..) 
-import click
 
 '''
 etat = 0 -> Clock is stopped
@@ -24,6 +23,24 @@ class Clock:
     '''12h (False) or 24h (True) format (by default : True)'''
     pm:bool=False 
     '''AM (0, False) or PM (1, True) (by default : False)'''
+
+def clock_validity(time:Clock):
+    # Hours
+    if time.format24:
+        if time.hours > 24:
+            raise ValueError("Hours cannot be above 24 in a clock context using 24h hh:mm:ss format.")
+    else:
+        if time.hours > 12:
+            raise ValueError("Hours cannot be above 12 in a clock context using 12h hh:mm:ss format.") 
+
+    # Minutes
+    if time.minutes > 59:
+        raise ValueError("Minutes cannot be above 59 in any context using classic hh:mm:ss format.")
+
+    if time.seconds > 59:
+        raise ValueError("Seconds cannot be above 59 in any context using classic hh:mm:ss format.")
+
+    
 
 def time_formatting(time:Clock)->str:
     '''Returns a string of the time in hh::mm::ss style with 12h or 24h format'''
