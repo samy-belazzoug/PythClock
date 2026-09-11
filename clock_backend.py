@@ -26,19 +26,19 @@ class Clock:
 
 def clock_validity(time:Clock):
     # Hours
-    if time.format24:
+    if time.format24 == True:
         if time.hours > 24:
-            raise ValueError("Hours cannot be above 24 in a clock context using 24h hh:mm:ss format.")
+            raise ValueError("\033[93mHours cannot be above 24 in a clock context using 24h hh:mm:ss format.")
     else:
         if time.hours > 12:
-            raise ValueError("Hours cannot be above 12 in a clock context using 12h hh:mm:ss format.") 
+            raise ValueError("\033[93mHours cannot be above 12 in a clock context using 12h hh:mm:ss format.") 
 
     # Minutes
     if time.minutes > 59:
-        raise ValueError("Minutes cannot be above 59 in any context using classic hh:mm:ss format.")
+        raise ValueError("\033[93mMinutes cannot be above 59 in any context using classic hh:mm:ss format.")
 
     if time.seconds > 59:
-        raise ValueError("Seconds cannot be above 59 in any context using classic hh:mm:ss format.")
+        raise ValueError("\033[93mSeconds cannot be above 59 in any context using classic hh:mm:ss format.")
 
     
 
