@@ -3,7 +3,11 @@ import clock_backend # Clock(), Clock().time_terminal_displaying(clk), clock_val
 from warnings import warn
 from time import sleep
 
-@click.command()
+@click.group()
+def cli():
+    pass
+
+@cli.command("time")
 @click.option('--time', nargs=5, default=(0,0,0,24,0), help='The starting hour of the clock',type=int)
 @click.option('--alarm',nargs=6, default=(0,0,0,0,0,0), help='The alarm time wanted', type=int)
 @click.option('--message',default="",help='If alarm, the message that will be displayed when its time',type=str)
@@ -47,6 +51,10 @@ def clock(time, alarm, message):
             clock_backend.clock_validity(clk)
             clock_backend.clock_validity(clk_alarm)
             return clock_backend.time_terminal_displaying(clk,True,clk_alarm, message)
-        
+
+@cli.command("chrono")
+def chrono():
+    return clock_backend.time_terminal_displaying(clock_backend.Clock(0,0,0))
+
 if __name__ == '__main__':
-    clock()
+    cli()
