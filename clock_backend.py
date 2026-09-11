@@ -25,22 +25,42 @@ class Clock:
     '''AM (0, False) or PM (1, True) (by default : False)'''
 
 def clock_validity(time:Clock):
+    '''Checks if the Clock time is a valid time considering its parameters.'''
     # Hours
     if time.format24 == True:
-        if time.hours > 24:
+        if 0 > time.hours or time.hours > 24:
             raise ValueError("\033[93mHours cannot be above 24 in a clock context using 24h hh:mm:ss format.")
     else:
-        if time.hours > 12:
+        if 1 > time.hours or time.hours > 12:
             raise ValueError("\033[93mHours cannot be above 12 in a clock context using 12h hh:mm:ss format.") 
 
     # Minutes
-    if time.minutes > 59:
+    if 0 > time.minutes or time.minutes > 59:
         raise ValueError("\033[93mMinutes cannot be above 59 in any context using classic hh:mm:ss format.")
 
-    if time.seconds > 59:
+    # Seconds
+    if 0 > time.seconds or time.seconds > 59:
         raise ValueError("\033[93mSeconds cannot be above 59 in any context using classic hh:mm:ss format.")
 
-    
+def clock_testing(time:Clock)->bool:
+    '''Copy-Paste of clock_validity but instead returns a boolean for unit testing.'''
+    # Hours
+    if time.format24:
+        if 0 > time.hours or time.hours > 24:
+            return False
+    else:
+        if 1 > time.hours or time.hours > 12:
+            return False
+        
+    # Minutes
+    if 0 > time.minutes or time.minutes > 59:
+        return False
+
+    # Seconds
+    if 0 > time.seconds or time.seconds > 59:
+        return False
+
+    return True
 
 def time_formatting(time:Clock)->str:
     '''Returns a string of the time in hh::mm::ss style with 12h or 24h format'''
