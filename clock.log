@@ -1,0 +1,49 @@
+2026-09-12 18:16:04,245 - ERROR - User did not entered a valid hours in 12h format.
+2026-09-12 18:31:41,083 - INFO - User launched a stopwatch.
+2026-09-12 18:31:41,083 - INFO - Time is running.
+2026-09-12 18:31:50,984 - INFO - User paused the time.
+2026-09-12 18:31:54,214 - INFO - User resumed the time.
+2026-09-12 18:32:00,256 - INFO - User stopped the time.
+2026-09-12 18:44:12,653 - ERROR - User a different time format for the clock and alarm.
+2026-09-12 18:50:17,858 - ERROR - User a different time format for the clock and alarm.
+2026-09-12 18:50:40,707 - ERROR - User mentionned a wrong formatted clockt.
+2026-09-12 18:50:48,789 - ERROR - User mentionned a wrong formatted clockt.
+2026-09-12 18:53:36,840 - INFO - User mentionned a correct clock and alarm.
+2026-09-12 18:53:36,841 - INFO - Time is running.
+2026-09-12 18:53:39,957 - INFO - Clock has been triggered.
+2026-09-12 18:53:48,147 - INFO - User resumed the time.
+2026-09-12 18:53:52,288 - INFO - User paused the time.
+2026-09-12 18:53:56,714 - INFO - User resumed the time.
+2026-09-12 18:54:03,063 - INFO - User stopped the time.
+2026-09-12 18:57:39,466 - INFO - User mentionned a correct clock and alarm.
+2026-09-12 18:57:39,466 - INFO - Time is running.
+2026-09-12 18:57:42,592 - INFO - Clock has been triggered.
+2026-09-12 18:57:46,862 - INFO - User stopped the time.
+2026-09-12 18:57:55,853 - WARNING - User passed an invalid time am/pm input. Clock set to AM.
+2026-09-12 18:57:58,868 - ERROR - User did not entered a valid hours in 12h format.
+2026-09-12 18:58:24,848 - WARNING - User passed an invalid time am/pm input. Clock set to AM.
+2026-09-12 18:58:27,850 - INFO - User mentionned a correct clock and alarm.
+2026-09-12 18:58:27,850 - INFO - Time is running.
+2026-09-12 18:58:27,908 - INFO - Clock has been triggered.
+2026-09-12 18:58:51,304 - INFO - User stopped the time.
+2026-09-12 18:59:02,821 - WARNING - User passed an invalid alarm am/pm input. Alarm set to AM.
+2026-09-12 19:00:50,401 - INFO - User mentionned a correct clock and alarm.
+2026-09-12 19:00:50,401 - INFO - Time is running.
+2026-09-12 19:00:50,452 - INFO - Clock has been triggered.
+2026-09-12 19:00:55,179 - INFO - User stopped the time.
+2026-09-12 19:01:02,474 - INFO - User mentionned a correct clock and alarm.
+2026-09-12 19:01:02,474 - INFO - Time is running.
+2026-09-12 19:01:02,528 - INFO - Clock has been triggered.
+2026-09-12 19:01:11,499 - INFO - User stopped the time.
+2026-09-12 19:06:55,816 - WARNING - User passed an invalid am/pm input. Clock set to AM.
+2026-09-12 19:07:00,817 - INFO - User mentionned a correct clock.
+2026-09-12 19:07:00,817 - INFO - Time is running.
+2026-09-12 19:07:09,544 - INFO - User paused the time.
+2026-09-12 19:07:13,761 - INFO - User resumed the time.
+2026-09-12 19:07:20,371 - INFO - User stopped the time.
+2026-09-12 19:07:43,966 - WARNING - User passed an invalid time format input. Clock set to 24h format.
+2026-09-12 19:07:46,969 - INFO - User mentionned a correct clock.
+2026-09-12 19:07:46,969 - INFO - Time is running.
+2026-09-12 19:07:54,363 - INFO - User stopped the time.
+2026-09-12 19:08:03,913 - WARNING - User passed an invalid am/pm input. Clock set to AM.
+2026-09-12 19:08:08,914 - ERROR - User did not entered a valid second

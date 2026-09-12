@@ -2,6 +2,7 @@ from time import sleep # sleep()
 from keyboard import read_key # read_key()
 import threading # Thread(), start()
 from dataclasses import dataclass # @dataclass
+import logging #basicConfig, error, info
 import os # name, system() (yes, it's deprecated, but it works well, currently..) 
 
 '''
@@ -12,6 +13,8 @@ etat = 3 -> Alarm is triggered
 '''
 clock_state = 1
 printing_state = 0
+
+logging.basicConfig(filename='clock.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 @dataclass
 class Clock: 
@@ -29,18 +32,23 @@ def clock_validity(time:Clock):
     # Hours
     if time.format24 == True:
         if 0 > time.hours or time.hours > 24:
+            logging.error('User did not entered a valid hours in 24h format.')
             raise ValueError("\033[93mHours cannot be above 24 in a clock context using 24h hh:mm:ss format.")
     else:
         if 1 > time.hours or time.hours > 12:
+            logging.error('User did not entered a valid hours in 12h format.')
             raise ValueError("\033[93mHours cannot be above 12 in a clock context using 12h hh:mm:ss format.") 
 
     # Minutes
     if 0 > time.minutes or time.minutes > 59:
+        logging.error('User did not entered a valid hour')
         raise ValueError("\033[93mMinutes cannot be above 59 in any context using classic hh:mm:ss format.")
 
     # Seconds
     if 0 > time.seconds or time.seconds > 59:
+        logging.error('User did not entered a valid second')
         raise ValueError("\033[93mSeconds cannot be above 59 in any context using classic hh:mm:ss format.")
+    return True
 
 def clock_testing(time:Clock)->bool:
     '''Copy-Paste of clock_validity but instead returns a boolean for unit testing.'''
@@ -130,11 +138,14 @@ def keyboard_input_management():
             sleep(0.3)
             if clock_state == 1:
                 clock_state = 2
+                logging.info('User paused the time.')
                 print("pause.")
             else:
                 clock_state = 1
+                logging.info('User resumed the time.')
                 print("resuming of time.")
         elif key_pressed == "esc":
+            logging.info('User stopped the time.')
             print("termination of the clock.")
             clock_state = 0
             break
@@ -172,6 +183,7 @@ def clock_state_management(time:Clock, alarm:bool=False, delta:Clock=(0,0,0), me
             elif clock_state == 3:
                 if printing_state == 2:
                     os.system('cls' if os.name == 'nt' else 'clear') 
+                    logging.info('Clock has been triggered.')
                     print(message)
                     print(time_formatting(time), " ", clock_state, " ", flush=True)
                     print("Press space to resume time. Press esc to stop time")
@@ -183,6 +195,7 @@ def clock_state_management(time:Clock, alarm:bool=False, delta:Clock=(0,0,0), me
 def time_terminal_displaying(time:Clock, alarm:bool=False, delta:Clock=(0,0,0), message:str=""):
     '''Display the time in the terminal with/without the alarm from 'time' and updates every seconds.'''
     global clock_state
+    logging.info('Time is running.')
     thread_boucle_execution = threading.Thread(target=clock_state_management, args=(time,alarm, delta, message))
     thread_io_operations = threading.Thread(target=keyboard_input_management, args=())
     thread_boucle_execution.start()
