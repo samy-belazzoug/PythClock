@@ -116,9 +116,9 @@ def time_updating(time:Clock)->Clock:
                     time.pm = True
                     time.hours = 1; time.minutes = 0; time.seconds = 0
         else:
-            if time.hours > 11:
+            if time.hours > 12:
                     time.pm = False
-                    time.hours = 0; time.minutes = 0; time.seconds = 0
+                    time.hours = 1; time.minutes = 0; time.seconds = 0
     #24 hours format management
     else:
         if time.hours > 23:
