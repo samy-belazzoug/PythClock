@@ -54,14 +54,14 @@ def clock(start, alarm, message):
                     clk = clock_backend.Clock(hours=hour, minutes=minute, seconds=second, format24=False ,pm=False)
 
                 if am_alarm == 0: # AM Alarm
-                    clk_alarm = clock_backend.Clock(hours=hour, minutes=minute, seconds=second, format24=False ,pm=False)
+                    clk_alarm = clock_backend.Clock(hours=hour_alarm, minutes=minute_alarm, seconds=second_alarm, format24=False ,pm=False)
                 elif am_alarm == 1: # PM alarm
-                    clk_alarm = clock_backend.Clock(hours=hour, minutes=minute, seconds=second, format24=False ,pm=True)  
+                    clk_alarm = clock_backend.Clock(hours=hour_alarm, minutes=minute_alarm, seconds=second_alarm, format24=False ,pm=True)  
                 else: # WRONG (set to AM)
                     logging.warning('User passed an invalid alarm am/pm input. Alarm set to AM.')
                     warn("\033[93mWarning: Invalid alarm AM/PM input. Alarm set to AM.\033[0m",SyntaxWarning)
                     sleep(3)
-                    clk = clock_backend.Clock(hours=hour, minutes=minute, seconds=second, format24=False ,pm=False)
+                    clk_alarm = clock_backend.Clock(hours=hour_alarm, minutes=minute_alarm, seconds=second_alarm, format24=False ,pm=False)
             elif format_clock == 24: # 24H Format
                 clk = clock_backend.Clock(hours=hour, minutes=minute, seconds=second, format24=True ,pm=False)
                 clk_alarm = clock_backend.Clock(hours=hour_alarm, minutes=minute_alarm, seconds=second_alarm, format24=True ,pm=False)
